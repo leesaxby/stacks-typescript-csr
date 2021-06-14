@@ -268,7 +268,7 @@ stages:
           app_insights_instrumentation_key: $[ dependencies.AppInfraDev.outputs['AppInfraDev.tfoutputs.app_insights_instrumentation_key'] ]
         pool:
           vmImage: ubuntu-18.04
-        environment: dev
+        environment: ${{ variables.domain}}-dev
         strategy:
           runOnce:
             deploy:
@@ -410,7 +410,7 @@ stages:
           app_insights_instrumentation_key: $[ dependencies.AppInfraProd.outputs['AppInfraProd.tfoutputs.app_insights_instrumentation_key'] ]
         pool:
           vmImage: $(pool_vm_image)
-        environment: prod
+        environment: ${{ variables.domain}}-prod
         strategy:
           runOnce:
             deploy:
