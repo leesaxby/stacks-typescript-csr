@@ -166,6 +166,8 @@ stages:
           runOnce:
             deploy:
               steps:
+                - download: none
+
                 - checkout: self
 
                 - checkout: templates
@@ -306,6 +308,8 @@ stages:
           runOnce:
             deploy:
               steps:
+                - download: none
+
                 - checkout: self
 
                 - checkout: templates
