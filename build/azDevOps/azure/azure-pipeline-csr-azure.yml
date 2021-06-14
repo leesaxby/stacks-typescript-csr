@@ -149,15 +149,19 @@ stages:
               build_file_artefact: $(build_artifact_deploy_name)
 
   - stage: Dev
+    dependsOn: Build
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
     variables:
       - group: amido-stacks-infra-credentials-nonprod
       - group: amido-stacks-webapp-csr
+      - name: Environment.ShortName
+        value: dev
     jobs:
       - deployment: AppInfraDev
         pool:
           vmImage: $(pool_vm_image)
         container: terraform_custom
-        environment: dev
+        environment: ${{ variables.domain }}-dev
         strategy:
           runOnce:
             deploy:
@@ -191,7 +195,7 @@ stages:
                     }
                     # Terraform State Config
                     terraform_init_backend_config: '-backend-config="key=$(tf_state_key)" -backend-config="storage_account_name=$(tf_state_storage)" -backend-config="resource_group_name=$(tf_state_rg)" -backend-config="container_name=$(tf_state_container)"'
-                    terraform_state_workspace: $(Environment.Name)
+                    terraform_state_workspace: $(Environment.ShortName)
                     tags: ''
                     # Terraform Resource Specific Config
                     terraform_extra_properties: {
@@ -199,13 +203,13 @@ stages:
                       TF_VAR_name_company: $(company),
                       TF_VAR_name_project: $(project),
                       TF_VAR_name_component: $(domain),
-                      TF_VAR_name_environment: $(Environment.Name),
-                      TF_VAR_stage: $(Environment.Name),
+                      TF_VAR_name_environment: $(Environment.ShortName),
+                      TF_VAR_stage: $(Environment.ShortName),
                       TF_VAR_index_document: "index.html",
                       TF_VAR_notfound_document: "404.html",
                       TF_VAR_enabled: "true",
                       TF_VAR_dns_zone: $(base_domain_nonprod),
-                      TF_VAR_dns_record: $(Environment.Name)-csr-app,
+                      TF_VAR_dns_record: $(Environment.ShortName)-csr-app,
                       TF_VAR_app_insights_name: "amido-stacks-nonprod-eun-core",
                       TF_VAR_create_dns_zone: false,
                       TF_VAR_dns_resource_group: "amido-stacks-nonprod-eun-core",
@@ -279,22 +283,25 @@ stages:
                     build_command: 'npm run build'
                     build_vars: {
                       NODE_ENV: production,
-                      MENU_API_URL: "https://$(Environment.Name)-netcore-app.$(base_domain_nonprod)/api/menu",
+                      MENU_API_URL: "https://$(Environment.ShortName)-netcore-app.$(base_domain_nonprod)/api/menu",
                       APPINSIGHTS_INSTRUMENTATIONKEY: $(app_insights_instrumentation_key)
                     }
                     build_out: './dist'
 
   - stage: Prod
+    dependsOn: Build
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     variables:
       - group: amido-stacks-infra-credentials-prod
       - group: amido-stacks-webapp-csr
+      - name: Environment.ShortName
+        value: prod
     jobs:
       - deployment: AppInfraProd
         pool:
           vmImage: $(pool_vm_image)
         container: terraform_custom
-        environment: prod
+        environment: ${{ variables.domain }}-prod
         strategy:
           runOnce:
             deploy:
@@ -328,7 +335,7 @@ stages:
                     }
                     # Terraform State Config
                     terraform_init_backend_config: '-backend-config="key=$(tf_state_key)" -backend-config="storage_account_name=$(tf_state_storage)" -backend-config="resource_group_name=$(tf_state_rg)" -backend-config="container_name=$(tf_state_container)"'
-                    terraform_state_workspace: $(Environment.Name)
+                    terraform_state_workspace: $(Environment.ShortName)
                     tags: ''
                     # Terraform Resource Specific Config
                     terraform_extra_properties: {
@@ -336,13 +343,13 @@ stages:
                       TF_VAR_name_company: $(company),
                       TF_VAR_name_project: $(project),
                       TF_VAR_name_component: $(domain),
-                      TF_VAR_name_environment: $(Environment.Name),
-                      TF_VAR_stage: $(Environment.Name),
+                      TF_VAR_name_environment: $(Environment.ShortName),
+                      TF_VAR_stage: $(Environment.ShortName),
                       TF_VAR_index_document: "index.html",
                       TF_VAR_notfound_document: "404.html",
                       TF_VAR_enabled: "true",
                       TF_VAR_dns_zone: $(base_domain_prod),
-                      TF_VAR_dns_record: $(Environment.Name)-csr-app,
+                      TF_VAR_dns_record: $(Environment.ShortName)-csr-app,
                       TF_VAR_app_insights_name: "amido-stacks-prod-eun-core",
                       TF_VAR_create_dns_zone: false,
                       TF_VAR_dns_resource_group: "amido-stacks-prod-eun-core",
@@ -416,7 +423,7 @@ stages:
                     build_command: 'npm run build'
                     build_vars: {
                       NODE_ENV: production,
-                      MENU_API_URL: "https://$(Environment.Name)-netcore-app.$(base_domain_prod)/api/menu",
+                      MENU_API_URL: "https://$(Environment.ShortName)-netcore-app.$(base_domain_prod)/api/menu",
                       APPINSIGHTS_INSTRUMENTATIONKEY: $(app_insights_instrumentation_key)
                     }
                     build_out: './dist'

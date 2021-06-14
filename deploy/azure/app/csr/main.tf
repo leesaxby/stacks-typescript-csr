@@ -1,5 +1,5 @@
 module "default_label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.16.0"
+  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=0.24.1"
   namespace  = "${var.name_company}-${var.name_project}"
   stage      = var.stage
   name       = var.name_component
@@ -11,7 +11,7 @@ module "default_label" {
 data "azurerm_client_config" "current" {}
 
 module "static_website" {
-  source                   = "git::https://github.com/amido/stacks-terraform//azurerm/modules/azurerm-client-side-ui?ref=v1.1.0"
+  source                   = "git::https://github.com/amido/stacks-terraform//azurerm/modules/azurerm-client-side-ui?ref=master"
   resource_namer           = module.default_label.id
   subscription_id          = data.azurerm_client_config.current.subscription_id
   resource_group_location  = var.resource_group_location
