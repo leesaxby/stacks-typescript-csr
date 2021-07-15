@@ -15,10 +15,10 @@ pr:
 trigger:
   branches:
     include:
-    - 'master'
+      - 'master'
   paths:
     include:
-    - '*'
+      - '*'
 
 resources:
   repositories:
@@ -128,7 +128,7 @@ stages:
               vulnerability_workdir: "$(Build.ArtifactStagingDirectory)"
               # Sonar settings
               static_code_analysis: false
-              #Linting and formatting validation
+              # Linting and formatting validation
               shared_eslint_config: "@amidostacks/eslint-config@latest"
               # Should be hardcoded in your sonar-project.properties file
               unit_test: true
@@ -330,7 +330,7 @@ stages:
                     # changing this would require changing the downstream consumers of these outputs
                     #
                     terraform_output_artefact: 'tfoutputs'
-                    #Auth config
+                    # Auth config
                     terraform_auth_properties: {
                       ARM_CLIENT_ID: $(prod_azure_client_id),
                       ARM_CLIENT_SECRET: $(prod_azure_client_secret),
