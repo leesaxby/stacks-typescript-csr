@@ -77,7 +77,7 @@ variables:
   build_artifact_deploy_name: $(self_generic_name)
   # Environment
   # Set the name of the resource group that has the DNS zones to be updated
-  dns_zone_resource_group: "Stacks-Ancillary-Resources"  
+  dns_zone_resource_group: "Stacks-Ancillary-Resources"
   # Infra
   region: "westeurope"
   base_domain_nonprod: nonprod.amidostacks.com
@@ -100,7 +100,7 @@ stages:
       - name: azure_client_id
         value: "$(azure-client-id)"
       - name: azure_client_secret
-        value: "$(azure-client-secret)"      
+        value: "$(azure-client-secret)"
     jobs:
       - job: WebAppBuild
         pool:
