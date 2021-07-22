@@ -338,7 +338,7 @@ stages:
                     azure_tenant_id: $(prod-azure-tenant-id)
                     azure_subscription_id: $(prod-azure-subscription-id)
                     azure_client_id: $(prod-azure-client-id)
-                    azure_client_secret: $(prod-azure-lient-secret)
+                    azure_client_secret: $(prod-azure-client-secret)
 
                 - template: azDevOps/azure/templates/v2/steps/deploy-terraform-meta-generic.yml@templates
                   parameters:
