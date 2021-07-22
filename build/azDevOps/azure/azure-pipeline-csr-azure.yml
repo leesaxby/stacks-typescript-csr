@@ -189,7 +189,7 @@ stages:
                 # Create TF infra
                 - template: azDevOps/azure/templates/v2/steps/login-services.yml@templates
                   parameters:
-                    container: terraform_custom
+                    container: terraform_custom # force the use of the current container which has the login credentials
                     login_azure: true
                     azure_tenant_id: $(azure-tenant-id)
                     azure_subscription_id: $(azure-subscription-id)
@@ -307,7 +307,7 @@ stages:
 
   - stage: Prod
     dependsOn: Build
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    # condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     variables:
       - group: amido-stacks-infra-credentials-prod
       - group: stacks-credentials-prod-kv
@@ -333,6 +333,7 @@ stages:
                 # Create TF infra
                 - template: azDevOps/azure/templates/v2/steps/login-services.yml@templates
                   parameters:
+                    container: terraform_custom # force the use of the current container which has the login credentials
                     login_azure: true
                     azure_tenant_id: $(prod_azure_tenant_id)
                     azure_subscription_id: $(prod_azure_subscription_id)
