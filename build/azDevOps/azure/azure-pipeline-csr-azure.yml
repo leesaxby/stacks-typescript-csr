@@ -189,7 +189,7 @@ stages:
                 # Create TF infra
                 - template: azDevOps/azure/templates/v2/steps/login-services.yml@templates
                   parameters:
-                    container: terraform_custom # force the use of the current container which has the login credentials
+                    container: terraform_custom  # force the use of the current container which has the login credentials
                     login_azure: true
                     azure_tenant_id: $(azure-tenant-id)
                     azure_subscription_id: $(azure-subscription-id)
@@ -333,7 +333,7 @@ stages:
                 # Create TF infra
                 - template: azDevOps/azure/templates/v2/steps/login-services.yml@templates
                   parameters:
-                    container: terraform_custom # force the use of the current container which has the login credentials
+                    container: terraform_custom  # force the use of the current container which has the login credentials
                     login_azure: true
                     azure_tenant_id: $(prod_azure_tenant_id)
                     azure_subscription_id: $(prod_azure_subscription_id)
