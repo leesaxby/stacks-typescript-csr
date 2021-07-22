@@ -335,10 +335,10 @@ stages:
                   parameters:
                     container: terraform_custom  # force the use of the current container which has the login credentials
                     login_azure: true
-                    azure_tenant_id: $(prod_azure_tenant_id)
-                    azure_subscription_id: $(prod_azure_subscription_id)
-                    azure_client_id: $(prod_azure_client_id)
-                    azure_client_secret: $(prod_azure_client_secret)
+                    azure_tenant_id: $(prod-azure-tenant-id)
+                    azure_subscription_id: $(prod-azure-subscription-id)
+                    azure_client_id: $(prod-azure-client-id)
+                    azure_client_secret: $(prod-azure-lient-secret)
 
                 - template: azDevOps/azure/templates/v2/steps/deploy-terraform-meta-generic.yml@templates
                   parameters:
@@ -349,10 +349,10 @@ stages:
                     terraform_output_artefact: 'tfoutputs'
                     # Auth config
                     terraform_auth_properties: {
-                      ARM_CLIENT_ID: $(prod_azure_client_id),
-                      ARM_CLIENT_SECRET: $(prod_azure_client_secret),
-                      ARM_SUBSCRIPTION_ID: $(prod_azure_subscription_id),
-                      ARM_TENANT_ID: $(prod_azure_tenant_id)
+                      ARM_CLIENT_ID: $(prod-azure-client-id),
+                      ARM_CLIENT_SECRET: $(prod-azure-client-secret),
+                      ARM_SUBSCRIPTION_ID: $(prod-azure-subscription-id),
+                      ARM_TENANT_ID: $(prod-azure-tenant-id)
                     }
                     # Terraform State Config
                     terraform_init_backend_config: '-backend-config="key=$(tf_state_key)" -backend-config="storage_account_name=$(tf_state_storage)" -backend-config="resource_group_name=$(tf_state_rg)" -backend-config="container_name=$(tf_state_container)"'
