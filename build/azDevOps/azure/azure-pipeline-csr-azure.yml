@@ -189,6 +189,7 @@ stages:
                 # Create TF infra
                 - template: azDevOps/azure/templates/v2/steps/login-services.yml@templates
                   parameters:
+                    container: terraform_custom
                     login_azure: true
                     azure_tenant_id: $(azure-tenant-id)
                     azure_subscription_id: $(azure-subscription-id)
